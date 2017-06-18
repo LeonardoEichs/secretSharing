@@ -1,14 +1,26 @@
 import sys
-from sharing import SecretSharer
+import random
+from sharing import Shamir
 
+def Shamir_test_case(n):
+    print "################# TEST CASE " + str(n) + " #################"
+    S = random.randint(1, 9999)
+    n = random.randint(2, 15)
+    k = random.randint(2, n)
+    print "S = " + str(S)
+    print "n = " + str(n)
+    print "k = " + str(k)
+    points = Shamir.split_secret(S, int(n), int(k))
+    print points
+    for i in range(2, n + 1):
+        print str(i) + " point(s)"
+        secret = Shamir.reconstruct_secret(points[:i])
+        if (secret == S):
+            print '\033[92m' + "[SUCCESS]" + '\033[0m'
+            print secret
+            break
+        else:
+            print '\033[91m' + "[FAIL]" + '\033[0m'
 
-S = sys.argv[1]
-n = sys.argv[2]
-k = sys.argv[3]
-b = sys.argv[4]
-print "S = " + S
-print "n = " + n
-print "k = " + k
-print "b = " + str(b)
-points = SecretSharer.split_secret(S, int(n), int(k), b)
-SecretSharer.reconstruct_secret(points[:3])
+for i in range(1, 2):
+    Shamir_test_case(i)
